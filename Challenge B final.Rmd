@@ -8,7 +8,6 @@ output:
 ---
 
 https://github.com/aymericmrd/Challenge-B.git
-We didn't succeed to import files on repository
 
 #Task 1B - Predicting house prices in Ames, Iowa (continued)
 
@@ -219,43 +218,43 @@ colnames(Dep.companies) <- c("Department","Number of companies")
 
 ##Step 3 - Merge the information from the SIREN dataset into the CNIL data.
 ```{r}
-#system.time(data.siren <- fread("/Users/aymericmrd/Documents/rprog/Challenge/sirc-17804_9075_14209_201710_L_M_20171101_030132835.csv", sep = ';', header = TRUE))
+system.time(data.siren <- fread("/Users/aymericmrd/Documents/rprog/Challenge/sirc-17804_9075_14209_201710_L_M_20171101_030132835.csv", sep = ';', header = TRUE))
 
 #We sort dates with decreasing order
-#data.siren <- data.siren[order(DATEMAJ , decreasing = TRUE ),]
+data.siren <- data.siren[order(DATEMAJ , decreasing = TRUE ),]
 
 #We delete duplicated SIREN number and keep the most update
-#data.siren <- subset(data.siren, FUN = !duplicated(data.siren[,1]))
-#anyDuplicated(data.siren)
+data.siren <- subset(data.siren, FUN = !duplicated(data.siren[,1]))
+anyDuplicated(data.siren)
 
 #We try to merge the two dataset by completing informations from the CNIL data with the "data.siren" dataset
-#CNIL.SIREN <- merge(x=CNIL, y=data.siren, by.x = "Siren", by.y = "SIREN" , all.x=TRUE, sort = FALSE)
-#attach(CNIL.SIREN)
+CNIL.SIREN <- merge(x=CNIL, y=data.siren, by.x = "Siren", by.y = "SIREN" , all.x=TRUE, sort = FALSE)
+attach(CNIL.SIREN)
 ```
 
 ##Step 4 - Plot the histogram of the size of the companies that nominated a CIL.
 ```{r}
 #We select the data about the size of companies
-#size.cil <- data.frame(CNIL.SIREN$LIBTEFEN)
+size.cil <- data.frame(CNIL.SIREN$LIBTEFEN)
 
 #We create a table to know frequencies
-#size.cil <- as.data.frame(table(size.cil))
-#colnames(size.cil) <- c("Size","Number of companies")
+size.cil <- as.data.frame(table(size.cil))
+colnames(size.cil) <- c("Size","Number of companies")
 ```
 
 #We arrange the look of the data
 ```{r}
-#substi1 <- function(x) {gsub("[\xe9]","é",x) }
-#substi2 <- function(x) {gsub("[\xe0]","à",x) }
-#size.cil$Size <- substi1(size.cil$Size)
-#size.cil$Size <- substi2(size.cil$Size)
+substi1 <- function(x) {gsub("[\xe9]","é",x) }
+substi2 <- function(x) {gsub("[\xe0]","à",x) }
+size.cil$Size <- substi1(size.cil$Size)
+size.cil$Size <- substi2(size.cil$Size)
 ```
 #We try to compute the histogramm
 ```{r}
-#barplot(size.cil$`Number of companies`, col = "green",
-       # xlab="Size",
-       # ylab="Number of companies", 
-       # main="Size of the companies that nominated a CIL",
-       # ylim=c(0,20000))
+barplot(size.cil$`Number of companies`, col = "green",
+        xlab="Size",
+        ylab="Number of companies", 
+        main="Size of the companies that nominated a CIL",
+        ylim=c(0,20000))
 ```
 
